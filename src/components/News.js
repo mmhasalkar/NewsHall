@@ -9,7 +9,6 @@ const News = (props) => {
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalResult, setTotalResult] = useState(0)
-    // document.title = `${props.category.charAt(0).toUpperCase() + props.category.slice(1)} - NewsHall`
 
     const updateNewsArticles = async () => {
         setLoading(true)
@@ -32,12 +31,14 @@ const News = (props) => {
     }
 
     useEffect(() => {
+        document.title = `${props.category.charAt(0).toUpperCase() + props.category.slice(1)} - NewsHall`
         updateNewsArticles()
+        // eslint-disable-next-line
     }, [])
 
     const fetchMoreData = async () => {
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pageSize=${props.pageSize}`;
         setPage(page + 1)
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
         let data = await fetch(url);
         let parsedData = await data.json();
 
@@ -47,7 +48,7 @@ const News = (props) => {
 
     return (
         <>
-            <h1 className="text-center" style={{ margin: '35px 0px' }}>NewsHall - Top {props.category.charAt(0).toUpperCase() + props.category.slice(1)} Headlines</h1>
+            <h1 className="text-center" style={{ margin: '90px 0 35px 0' }}>NewsHall - Top {props.category.charAt(0).toUpperCase() + props.category.slice(1)} Headlines</h1>
             {loading && <Loader />}
             <InfiniteScroll
                 dataLength={articles.length}
